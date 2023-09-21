@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Colider
+  - Pick
+  - UFO
   layers:
   - Default
   - TransparentFX
@@ -44,12 +47,9 @@ TagManager:
   - name: BackGround
     uniqueID: 2739413215
     locked: 0
-  - name: Ufo
-    uniqueID: 2316902753
-    locked: 0
   - name: PickUp
     uniqueID: 871530945
     locked: 0
-  - name: 
-    uniqueID: 558955563
+  - name: Ufo
+    uniqueID: 2316902753
     locked: 0
