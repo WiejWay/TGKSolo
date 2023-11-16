@@ -29,7 +29,7 @@ public class Points : MonoBehaviour
 
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
 
-        if (punkty >= (currentSceneIndex + 1) * 3)
+        if (punkty >= (currentSceneIndex + 1) * 1)
         {
             Victory.SetActive(true);
             StartCoroutine(LoadNextScene(3.0f));
