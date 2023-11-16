@@ -15,7 +15,7 @@ public class UFO : MonoBehaviour
         Points skryptPunktow = GameObject.FindObjectOfType<Points>();
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
 
-        if (skryptPunktow.punkty <= (currentSceneIndex + 1) * 3)
+        if (skryptPunktow.punkty < (currentSceneIndex + 1) * 3)
         {
             if (Input.GetKey(KeyCode.D))
             {
