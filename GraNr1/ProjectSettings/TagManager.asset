@@ -9,6 +9,7 @@ TagManager:
   - UFO
   - Points
   - Back
+  - Level
   layers:
   - Default
   - TransparentFX

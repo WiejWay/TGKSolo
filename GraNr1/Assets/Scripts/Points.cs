@@ -1,10 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using TMPro;
 using UnityEngine.SceneManagement;
-using System;
+using UnityEditor;
+using UnityEditor.SceneManagement;
 
 public class Points : MonoBehaviour
 {
@@ -42,49 +41,20 @@ public class Points : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        int nextSceneIndex = currentSceneIndex + 1;
+        int nextSceneIndex = currentSceneIndex + 2;
 
-        // Clone the current scene
-        Scene currentScene = SceneManager.GetActiveScene();
-        Scene newScene = SceneManager.CreateScene($"lv{nextSceneIndex + 2}");
+        // Duplicate the current scene
+        string currentScenePath = SceneUtility.GetScenePathByBuildIndex(currentSceneIndex);
+        string newScenePath = $"Assets/Scenes/lv{nextSceneIndex}.unity";
+        AssetDatabase.CopyAsset(currentScenePath, newScenePath);
+        AssetDatabase.Refresh();
 
-        // Copy all root objects to the new scene
-        foreach (GameObject rootObject in currentScene.GetRootGameObjects())
-        {
-            SceneManager.MoveGameObjectToScene(rootObject, newScene);
-        }
+        // Add the duplicated scene to the build settings
+        EditorBuildSettingsScene[] scenes = EditorBuildSettings.scenes;
+        ArrayUtility.Add(ref scenes, new EditorBuildSettingsScene(newScenePath, true));
+        EditorBuildSettings.scenes = scenes;
 
-        // Unload the current scene
-        SceneManager.UnloadSceneAsync(currentScene);
-
-        // Check if the new scene is not in the build settings, then add it
-        if (!SceneInBuildSettings($"lv{nextSceneIndex + 2}"))
-        {
-            string scenePath = $"Assets/Scenes/lv{nextSceneIndex + 2}.unity";
-            EditorBuildSettings.scenes = AddSceneToBuildSettings(EditorBuildSettings.scenes, scenePath);
-        }
-
-        // Load the new scene
-        SceneManager.LoadScene($"lv{nextSceneIndex + 2}");
-    }
-
-    private bool SceneInBuildSettings(string sceneName)
-    {
-        EditorBuildSettingsScene[] buildScenes = EditorBuildSettings.scenes;
-        foreach (var buildScene in buildScenes)
-        {
-            if (buildScene.path.Contains(sceneName))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private EditorBuildSettingsScene[] AddSceneToBuildSettings(EditorBuildSettingsScene[] scenes, string scenePath)
-    {
-        List<EditorBuildSettingsScene> sceneList = new List<EditorBuildSettingsScene>(scenes);
-        sceneList.Add(new EditorBuildSettingsScene(scenePath, true));
-        return sceneList.ToArray();
+        // Load the duplicated scene
+        SceneManager.LoadScene($"lv{nextSceneIndex}");
     }
 }
