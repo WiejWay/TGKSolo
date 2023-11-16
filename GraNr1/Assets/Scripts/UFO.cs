@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UFO : MonoBehaviour
 {
@@ -12,7 +13,9 @@ public class UFO : MonoBehaviour
     void Update()
     {
         Points skryptPunktow = GameObject.FindObjectOfType<Points>();
-        if (skryptPunktow.punkty < 3)
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+
+        if (skryptPunktow.punkty <= (currentSceneIndex + 1) * 3)
         {
             if (Input.GetKey(KeyCode.D))
             {

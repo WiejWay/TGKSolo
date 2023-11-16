@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System;
 
 public class Points : MonoBehaviour
 {
@@ -24,20 +25,22 @@ public class Points : MonoBehaviour
     public void DodajPunkty(int ilosc)
     {
         punkty += ilosc;
-        if (punkty >= 3)
+        print($"{punkty} {punkty + ilosc}");
+
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+
+        if (punkty >= (currentSceneIndex +1) * 3)
         {
             Victory.SetActive(true);
-            // Load the next scene with the next build index
-            LoadNextScene();
+            StartCoroutine(LoadNextScene(3.0f));
         }
     }
 
-    void LoadNextScene()
+    IEnumerator LoadNextScene(float delay)
     {
-        // Get the current scene's build index
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        yield return new WaitForSeconds(delay);
 
-        // Load the next scene by incrementing the current build index
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentSceneIndex + 1);
     }
 }
