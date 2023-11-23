@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Pickup : MonoBehaviour
 {
+    public int pointsToAdd = 1; // Set the default value or adjust in the Inspector
+
     void Start()
     {
         RozmiescNaPlanszy();
@@ -14,7 +16,7 @@ public class Pickup : MonoBehaviour
         if (other.CompareTag("UFO"))
         {
             Points skryptPunktow = GameObject.FindObjectOfType<Points>();
-            skryptPunktow.DodajPunkty(1);
+            skryptPunktow.DodajPunkty(pointsToAdd);
             RozmiescNaPlanszy();
         }
     }

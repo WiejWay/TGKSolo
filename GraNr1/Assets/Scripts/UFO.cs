@@ -1,41 +1,47 @@
 using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class UFO : MonoBehaviour
 {
+    private Levels levelScript;
+    private Points skryptPunktow;
+
     void Start()
     {
-
+        levelScript = GameObject.FindObjectOfType<Levels>();
+        skryptPunktow = GameObject.FindObjectOfType<Points>();
     }
 
     void Update()
     {
-        Points skryptPunktow = GameObject.FindObjectOfType<Points>();
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-
-        if (skryptPunktow.punkty < (currentSceneIndex + 1) * 3)
+        if (skryptPunktow.punkty < (levelScript.level + 3) * (levelScript.level * 2))
         {
-            if (Input.GetKey(KeyCode.D))
-            {
-                transform.Translate(Vector2.right * Time.deltaTime * 15f);
-            }
+            MoveUFO();
+        }
+    }
 
-            if (Input.GetKey(KeyCode.W))
-            {
-                transform.Translate(Vector2.up * Time.deltaTime * 15f);
-            }
+    void MoveUFO()
+    {
+        if (Input.GetKey(KeyCode.D))
+        {
+            transform.Translate(Vector2.right * Time.deltaTime * 15f);
+        }
 
-            if (Input.GetKey(KeyCode.A))
-            {
-                transform.Translate(Vector2.left * Time.deltaTime * 15f);
-            }
+        if (Input.GetKey(KeyCode.W))
+        {
+            transform.Translate(Vector2.up * Time.deltaTime * 15f);
+        }
 
-            if (Input.GetKey(KeyCode.S))
-            {
-                transform.Translate(Vector2.down * Time.deltaTime * 15f);
-            }
+        if (Input.GetKey(KeyCode.A))
+        {
+            transform.Translate(Vector2.left * Time.deltaTime * 15f);
+        }
+
+        if (Input.GetKey(KeyCode.S))
+        {
+            transform.Translate(Vector2.down * Time.deltaTime * 15f);
         }
     }
 }

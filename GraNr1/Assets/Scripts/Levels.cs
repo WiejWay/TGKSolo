@@ -1,25 +1,27 @@
-using System.Collections;
 using UnityEngine;
-using TMPro;
 using UnityEngine.SceneManagement;
-using UnityEditor;
-using UnityEditor.SceneManagement;
+using TMPro;
 
 public class Levels : MonoBehaviour
 {
+    public int level = 1;
     public TMP_Text levelinfo;
 
     void Start()
     {
+        // Set up levelinfo at the start.
         levelinfo = GameObject.FindWithTag("Level").GetComponent<TMP_Text>();
+    }
 
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-
-        levelinfo.text = $"Poziom {(currentSceneIndex + 1).ToString()}";
+    public void DodajLevel(int ilosc)
+    {
+        // Increment the level.
+        level += ilosc;
     }
 
     void Update()
     {
+        // Update the text based on the current level.
+        levelinfo.text = $"Poziom {(level).ToString()}";
     }
-
 }

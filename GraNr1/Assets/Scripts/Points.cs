@@ -1,60 +1,65 @@
-using System.Collections;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
-using UnityEditor;
-using UnityEditor.SceneManagement;
+using System.Collections;
 
 public class Points : MonoBehaviour
 {
     public int punkty = 0;
     public TMP_Text textPunktow;
+    public TMP_Text victoryText; // Add a reference to the Victory text component
     public GameObject Victory;
+    public Levels levelsScript; // Reference to the Levels script
 
     void Start()
     {
         textPunktow = GameObject.FindWithTag("Points").GetComponent<TMP_Text>();
-        textPunktow.text = punkty.ToString();
+        UpdatePointsText();
+        levelsScript = GameObject.FindObjectOfType<Levels>();
+        victoryText = Victory.GetComponentInChildren<TMP_Text>(); // Assuming the text component is a child of the Victory GameObject
+
+        
     }
+
 
     void Update()
     {
-        textPunktow.text = punkty.ToString();
+        UpdatePointsText();
+    }
+
+    public void UpdatePointsText()
+    {
+        levelsScript = GameObject.FindObjectOfType<Levels>();
+        textPunktow.text = punkty.ToString() + "/"+ ((levelsScript.level + 3) * (levelsScript.level * 2)).ToString();
+
     }
 
     public void DodajPunkty(int ilosc)
     {
         punkty += ilosc;
-        print($"{punkty} {punkty + ilosc}");
 
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-
-        if (punkty >= (currentSceneIndex + 1) * 1)
+        if (punkty >= (levelsScript.level + 3) * (levelsScript.level * 2))
         {
             Victory.SetActive(true);
-            StartCoroutine(LoadNextScene(3.0f));
+            StartCoroutine(DeactivateVictoryAfterDelay(2.0f)); // Delay is set to 2 seconds, adjust as needed
+
+            // Set the Victory text to display the current level
+            if (victoryText != null)
+            {
+                victoryText.text = $"Ukoñczono poziom {levelsScript.level}";
+            }
         }
     }
 
-    IEnumerator LoadNextScene(float delay)
+    IEnumerator DeactivateVictoryAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
+        Victory.SetActive(false);
 
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        int nextSceneIndex = currentSceneIndex + 2;
-
-        // Duplicate the current scene
-        string currentScenePath = SceneUtility.GetScenePathByBuildIndex(currentSceneIndex);
-        string newScenePath = $"Assets/Scenes/lv{nextSceneIndex}.unity";
-        AssetDatabase.CopyAsset(currentScenePath, newScenePath);
-        AssetDatabase.Refresh();
-
-        // Add the duplicated scene to the build settings
-        EditorBuildSettingsScene[] scenes = EditorBuildSettings.scenes;
-        ArrayUtility.Add(ref scenes, new EditorBuildSettingsScene(newScenePath, true));
-        EditorBuildSettings.scenes = scenes;
-
-        // Load the duplicated scene
-        SceneManager.LoadScene($"lv{nextSceneIndex}");
+        if (levelsScript != null)
+        {
+            levelsScript.DodajLevel(1);
+            punkty = 0;
+        }
     }
 }
