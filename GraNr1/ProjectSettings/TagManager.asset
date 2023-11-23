@@ -10,6 +10,7 @@ TagManager:
   - Points
   - Back
   - Level
+  - music
   layers:
   - Default
   - TransparentFX
