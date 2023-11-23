@@ -42,7 +42,7 @@ public class Cringe : MonoBehaviour
         // Optional: Update the button text based on the sound state
         if (buttonText != null)
         {
-            buttonText.text = isMuted ? "W³¹cz dŸwiêk" : "Wy³¹cz dŸwiêk";
+            buttonText.text = isMuted ? "W³¹cz Cringe" : "Wy³¹cz Cringe";
         }
     }
 
